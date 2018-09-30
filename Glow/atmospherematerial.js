@@ -61,7 +61,6 @@ const createAtmosphereMaterial = () => {
 		},
 		vertexShader: vertexShader,
 		fragmentShader: fragmentShader,
-		//blending	: THREE.AdditiveBlending,
 		transparent: true,
 		depthWrite: false,
 	});

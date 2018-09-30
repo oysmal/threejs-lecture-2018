@@ -73,8 +73,8 @@ class SolarSystem {
     addSunBeams() {
         this.glowMesh = new GeometricGlowMesh(this.sun) // Create a new GlowMesh
         this.sun.add(this.glowMesh.object3d) // Add the glowMesh's object3d instance variable, which holds its meshes as children.
-        this.glowMesh.insideMesh.material.uniforms.glowColor.value.set(0xFFFF66); // Set a nice color of the glow.
-        this.glowMesh.outsideMesh.material.uniforms.glowColor.value.set(0xFFEE44); // Set a little bit darker, more red color of the beams.
+        this.glowMesh.insideMesh.material.uniforms.glowColor.value.set(0xFFEE44); // Set a nice color of the glow.
+        this.glowMesh.outsideMesh.material.uniforms.glowColor.value.set(0xFFEE44); // Same for the beams
         this.state.animate_objects.push(this.glowMesh); // Add the glowMesh to our state's animate_objects array, since we want to call its animate() method each render pass.
     }
 }

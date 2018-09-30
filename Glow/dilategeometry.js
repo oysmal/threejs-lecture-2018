@@ -9,7 +9,7 @@
  */
 const dilateGeometry	= (geometry, length) => {
 	// gather vertexNormals from geometry.faces
-	var vertexNormals	= new Array(geometry.vertices.length);
+	const vertexNormals	= new Array(geometry.vertices.length);
 	geometry.faces.forEach(function(face){
 		if( face instanceof THREE.Face4 ){
 			vertexNormals[face.a]	= face.vertexNormals[0];
@@ -24,7 +24,7 @@ const dilateGeometry	= (geometry, length) => {
 	});
 	// modify the vertices according to vertextNormal
 	geometry.vertices.forEach(function(vertex, idx){
-		var vertexNormal = vertexNormals[idx];
+		const vertexNormal = vertexNormals[idx];
 		vertex.x	+= vertexNormal.x * length;
 		vertex.y	+= vertexNormal.y * length;
 		vertex.z	+= vertexNormal.z * length;
