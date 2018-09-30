@@ -75,6 +75,7 @@ class SolarSystem {
         this.sun.add(this.glowMesh.object3d) // Add the glowMesh's object3d instance variable, which holds its meshes as children.
         this.glowMesh.insideMesh.material.uniforms.glowColor.value.set(0xFFEE44); // Set a nice color of the glow.
         this.glowMesh.outsideMesh.material.uniforms.glowColor.value.set(0xFFEE44); // Same for the beams
+        this.glowMesh.outsideMesh.material.uniforms.pulseMagnitude.value = 5.0; // Set the magnitude of the pulse (how long are the beams)
         this.state.animate_objects.push(this.glowMesh); // Add the glowMesh to our state's animate_objects array, since we want to call its animate() method each render pass.
     }
 }
