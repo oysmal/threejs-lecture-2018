@@ -14,37 +14,24 @@
  */
 const createPulsingAtmosphereMaterial = () => {
 	const vertexShader = `
-		varying vec3 vVertexWorldPosition;												// Here we are declaring the variables we will pass through to the fragment shader
-		varying vec3 vVertexNormal;
-		varying vec4 vFragColor;
-		varying float pulsePhaseFrag;
-        uniform float pulseMagnitude;                                                   // pulse magnitude uniform controlling how big the pulse is
-        attribute float pulsePhase;                                                     // pulse phase uniform, setting the current phase of the pulse
+		uniform float pulseMagnitude;                                                   // Pulse magnitude uniform controlling how big the pulse is
+		uniform float intensity;                                                        // Uniform controlling the intensity of the beams
+		varying float intensityFrag;													// Here we are declaring the variables we will pass through to the fragment shader
+        attribute float pulsePhase;                                                     // Pulse phase uniform, setting the current phase of the pulse
         
 		void main() {
-			vVertexNormal = normalize(normalMatrix * normal);                           // translate the normal to eye space 
-			vec3 vPos = position + normal*pulsePhase*pulseMagnitude;                    // calculate the position of the vertex by adding the normal (not in eyespace) multiplied by the phase and magnitude
-			vVertexWorldPosition = (modelMatrix * vec4(vPos, 1.0)).xyz;                 // translate the position to eye space
-            pulsePhaseFrag = pulsePhase;                                                      // send the pulse phase to the fragment shader
-			// set gl_Position
-			gl_Position	= projectionMatrix * modelViewMatrix * vec4(vPos, 1.0);         // translate position to screen coordinates
+			vec3 vPos = position + normal*pulsePhase*pulseMagnitude;                    // Calculate the position of the vertex by adding the normal (not in eyespace) multiplied by the phase and magnitude
+            intensityFrag = intensity*(1.0-pulsePhase);                                 // Calculate the intensity of the color at current phase. Use the phase to decrease intensity at the end of the beam
+			gl_Position	= projectionMatrix * modelViewMatrix * vec4(vPos, 1.0);         // Translate position to screen coordinates and set the gl_Position
 		}
 	`;
 
 	const fragmentShader = `
 		uniform vec3 glowColor;                                                         // Uniform controlling the glow color 
-		uniform float intensity;                                                        // Uniform controlling the intensity of the beams
-
-		varying vec3 vVertexNormal;                                                     // Variables we get from the vertex shader
-		varying vec3 vVertexWorldPosition;
-		varying vec4 vFragColor;
-        varying float pulsePhaseFrag;
+		varying float intensityFrag;
 
 		void main() {
-			vec3 worldCameraToVertex = vVertexWorldPosition - cameraPosition;                             // Get the vector between vertex and camera in world space
-			vec3 viewCameraToVertex	= normalize((viewMatrix * vec4(worldCameraToVertex, 0.0)).xyz);       // translate the vector into eye space and normalize it
-			float _intensity	= intensity*(1.0-pulsePhaseFrag);                                             // Calculate the intensity of the color at current phase. Use the phase to decrease intensity at the end of the beam
-			gl_FragColor = vec4(glowColor, _intensity);                                                    // Set the frag color
+			gl_FragColor = vec4(glowColor, intensityFrag);                              // Set the frag color, with the intensity passed from the vertex shader as alpha value
 		}
 	`;
 
@@ -62,7 +49,7 @@ const createPulsingAtmosphereMaterial = () => {
 			},
 			pulseMagnitude	: {
 				type	: "f",
-				value	: 0.0
+				value	: 1.0
 			},
 		},
 		vertexShader	: vertexShader,
