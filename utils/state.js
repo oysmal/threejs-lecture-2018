@@ -3,9 +3,7 @@
  */
 
 class State {
-
     constructor() {
-
         // Singleton setup. If there is an active instance, return that. Do not create a new one.
         if (State._instance) {
             return State._instance;
@@ -23,6 +21,6 @@ class State {
             return new State();
         }
     }
-};
+}
 
-State._instance = null;  // Set the class variable (static variable);
+State._instance = null; // Set the class variable (static variable);
